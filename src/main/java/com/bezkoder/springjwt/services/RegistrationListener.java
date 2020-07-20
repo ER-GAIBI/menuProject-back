@@ -13,7 +13,7 @@ import java.util.UUID;
 @Component
 public class RegistrationListener implements ApplicationListener<OnRegistrationCompleteEvent> {
 
-    private static final String URL = "http://localhost:4200/successRegistration";
+    private static final String URL = "http://46.101.151.85:4200/successRegistration";
 
     @Autowired
     private IUserService service;
