@@ -6,7 +6,6 @@ import javax.validation.constraints.*;
  
 public class SignupRequest {
     @NotBlank
-    @Size(min = 3, max = 20)
     private String username;
  
     @NotBlank
@@ -22,7 +21,7 @@ public class SignupRequest {
 
     private String companyName;
 
-    private String commercialNumber;
+    private String commercialRegistrationNo;
 
     public String getCompanyName() {
         return companyName;
@@ -32,12 +31,12 @@ public class SignupRequest {
         this.companyName = companyName;
     }
 
-    public String getCommercialNumber() {
-        return commercialNumber;
+    public String getCommercialRegistrationNo() {
+        return commercialRegistrationNo;
     }
 
-    public void setCommercialNumber(String commercialNumber) {
-        this.commercialNumber = commercialNumber;
+    public void setCommercialRegistrationNo(String commercialRegistrationNo) {
+        this.commercialRegistrationNo = commercialRegistrationNo;
     }
 
     public String getUsername() {
