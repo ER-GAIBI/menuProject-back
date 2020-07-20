@@ -34,7 +34,10 @@ public class User {
 
 	private String companyName;
 
-	private String commercialNumber;
+	private String commercialRegistrationNo;
+
+	@Column(name = "enabled")
+	private boolean enabled;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(	name = "user_roles", 
@@ -43,13 +46,15 @@ public class User {
 	private Set<Role> roles = new HashSet<>();
 
 	public User() {
+		super();
+		this.enabled=false;
 	}
 
 	public User(String username, String email, String password, String commercialNumber, String companyName) {
 		this.username = username;
 		this.email = email;
 		this.password = password;
-		this.commercialNumber = commercialNumber;
+		this.commercialRegistrationNo = commercialNumber;
 		this.companyName = companyName;
 	}
 
@@ -61,12 +66,12 @@ public class User {
 		this.companyName = companyName;
 	}
 
-	public String getCommercialNumber() {
-		return commercialNumber;
+	public String getCommercialRegistrationNo() {
+		return commercialRegistrationNo;
 	}
 
-	public void setCommercialNumber(String commercialNumber) {
-		this.commercialNumber = commercialNumber;
+	public void setCommercialRegistrationNo(String commercialRegistrationNo) {
+		this.commercialRegistrationNo = commercialRegistrationNo;
 	}
 
 	public Long getId() {
@@ -107,5 +112,13 @@ public class User {
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 }
