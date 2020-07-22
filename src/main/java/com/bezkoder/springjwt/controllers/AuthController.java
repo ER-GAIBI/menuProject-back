@@ -110,9 +110,9 @@ public class AuthController {
         }
 
 		User registered = this.service.registerNewUserAccount(signUpRequest);
-		String appUrl = request.getContextPath();
+		/*String appUrl = request.getContextPath();
 		eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered,
-				request.getLocale(), appUrl));
+				request.getLocale(), appUrl));*/
 
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 	}
