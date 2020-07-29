@@ -15,40 +15,34 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class UserDetailsImpl implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
-	private Long id;
+	/*private Long id;
 
 	private String username;
 
 	private String email;
 
-	private boolean enabled = true;
+	private boolean enabled = true;*/
 
-	@JsonIgnore
-	private String password;
+	private User user;
+
+	/*@JsonIgnore
+	private String password;*/
 
 	private Collection<? extends GrantedAuthority> authorities;
 
-	public UserDetailsImpl(Long id, String username, String email, String password, boolean isEnabled,
-			Collection<? extends GrantedAuthority> authorities) {
-		this.id = id;
-		this.username = username;
-		this.email = email;
-		this.password = password;
-		this.enabled = isEnabled;
+	private UserDetailsImpl(User user,
+							Collection<? extends GrantedAuthority> authorities) {
+		this.user = user;
 		this.authorities = authorities;
 	}
 
-	public static UserDetailsImpl build(User user) {
+	static UserDetailsImpl build(User user) {
 		List<GrantedAuthority> authorities = user.getRoles().stream()
 				.map(role -> new SimpleGrantedAuthority(role.getName().name()))
 				.collect(Collectors.toList());
 
 		return new UserDetailsImpl(
-				user.getId(), 
-				user.getUsername(),
-				user.getEmail(),
-				user.getPassword(),
-				user.isEnabled(),
+				user,
 				authorities);
 	}
 
@@ -58,21 +52,21 @@ public class UserDetailsImpl implements UserDetails {
 	}
 
 	public Long getId() {
-		return id;
+		return user.getId();
 	}
 
 	public String getEmail() {
-		return email;
+		return user.getEmail();
 	}
 
 	@Override
 	public String getPassword() {
-		return password;
+		return user.getPassword();
 	}
 
 	@Override
 	public String getUsername() {
-		return username;
+		return user.getUsername();
 	}
 
 	@Override
@@ -95,6 +89,14 @@ public class UserDetailsImpl implements UserDetails {
 		return true;
 	}
 
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)
@@ -102,6 +104,6 @@ public class UserDetailsImpl implements UserDetails {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		UserDetailsImpl user = (UserDetailsImpl) o;
-		return Objects.equals(id, user.id);
+		return Objects.equals(this.user.getId(), user.getId());
 	}
 }
