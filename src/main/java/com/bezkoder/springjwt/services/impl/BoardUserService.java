@@ -54,7 +54,8 @@ public class BoardUserService implements IBoardUser {
             if (qrCodeText != null) {
                 qrCodeText = qrCodeText.substring(0, qrCodeText.lastIndexOf('.'));
             }
-            String filePath = ROOT + qrCodeText + ".png";
+            // String filePath = ROOT + qrCodeText + ".png";
+            String filePath = qrCodeText + ".png";
             int size = 200;
             String fileType = "png";
             File qrFile = new File(filePath);
@@ -76,7 +77,8 @@ public class BoardUserService implements IBoardUser {
             if (qrCodeText != null) {
                 qrCodeText = qrCodeText.substring(0, qrCodeText.lastIndexOf('.'));
             }
-            String filePath = ROOT + qrCodeText + ".png";
+            // String filePath = ROOT + qrCodeText + ".png";
+            String filePath = qrCodeText + ".png";
             int size = 200;
             String fileType = "png";
             File qrFile = new File(filePath);
@@ -94,32 +96,20 @@ public class BoardUserService implements IBoardUser {
 
     private static void createQRImage(File qrFile, String qrCodeText, int size, String fileType)
             throws WriterException, IOException {
-        System.out.println("--------------------------------------1");
         // Create the ByteMatrix for the QR-Code that encodes the given String
         Hashtable<EncodeHintType, ErrorCorrectionLevel> hintMap = new Hashtable<>();
-        System.out.println("--------------------------------------2");
         hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
-        System.out.println("--------------------------------------3");
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
-        System.out.println("--------------------------------------4");
         BitMatrix byteMatrix = qrCodeWriter.encode(qrCodeText, BarcodeFormat.QR_CODE, size, size, hintMap);
         // Make the BufferedImage that are to hold the QRCode
-        System.out.println("--------------------------------------5");
         int matrixWidth = byteMatrix.getWidth();
-        System.out.println("--------------------------------------6");
         BufferedImage image = new BufferedImage(matrixWidth, matrixWidth, BufferedImage.TYPE_INT_RGB);
-        System.out.println("--------------------------------------7");
         image.createGraphics();
-        System.out.println("--------------------------------------8");
         Graphics2D graphics = (Graphics2D) image.getGraphics();
-        System.out.println("--------------------------------------9");
         graphics.setColor(Color.WHITE);
-        System.out.println("--------------------------------------10");
         graphics.fillRect(0, 0, matrixWidth, matrixWidth);
-        System.out.println("--------------------------------------11");
         // Paint and save the image using the ByteMatrix
         graphics.setColor(Color.BLACK);
-        System.out.println("--------------------------------------12");
 
         for (int i = 0; i < matrixWidth; i++) {
             for (int j = 0; j < matrixWidth; j++) {
@@ -128,7 +118,6 @@ public class BoardUserService implements IBoardUser {
                 }
             }
         }
-        System.out.println("--------------------------------------13");
         ImageIO.write(image, fileType, qrFile);
     }
 
