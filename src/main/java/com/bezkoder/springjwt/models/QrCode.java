@@ -19,6 +19,8 @@ public class QrCode {
 
     private String name;
 
+    private String filePath;
+
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
@@ -26,10 +28,11 @@ public class QrCode {
     public QrCode() {
     }
 
-    public QrCode(String location, User user, String name) {
+    public QrCode(String location, User user, String name, String filePath) {
         this.location = location;
         this.user = user;
         this.name = name;
+        this.filePath = filePath;
     }
 
     public Long getId() {
@@ -62,5 +65,13 @@ public class QrCode {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }

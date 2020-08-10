@@ -28,8 +28,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -62,7 +66,8 @@ public class BoardUserService implements IBoardUser {
             createQRImage(qrFile, qrCodeText, size, fileType);
             UserDetailsImpl userDetail = (UserDetailsImpl) getAuthentication().getPrincipal();
             User user = userDetail.getUser();
-            QrCode qrCode = new QrCode(filePath, user, name);
+            String fileToSave = this.saveUploadedFile(file);
+            QrCode qrCode = new QrCode(filePath, user, name, fileToSave);
             qrCodeRepository.save(qrCode);
         } else {
             // return null;
@@ -83,11 +88,21 @@ public class BoardUserService implements IBoardUser {
             String fileType = "png";
             File qrFile = new File(filePath);
             createQRImage(qrFile, qrCodeText, size, fileType);
+            String fileToSave = this.saveUploadedFile(file);
             qrCode.setName(name);
             qrCode.setLocation(filePath);
+            qrCode.setFilePath(fileToSave);
         } else {
             // return null;
         }
+    }
+
+    private String saveUploadedFile(MultipartFile file) throws IOException {
+        String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHmmss-"));
+        String fileName = date + file.getOriginalFilename();
+
+        Files.copy(file.getInputStream(), Paths.get(fileName), StandardCopyOption.REPLACE_EXISTING);
+        return fileName;
     }
 
     private Authentication getAuthentication() {
@@ -129,7 +144,9 @@ public class BoardUserService implements IBoardUser {
         List<QrCode> qrCodes = qrCodeRepository.findAllByUserId(user.getId());
         qrCodes.forEach(qrCode -> {
             Path path = Paths.get(qrCode.getLocation());
-            QrCodeDto qrCodeDto = new QrCodeDto(qrCode, readFileToByteArray(path.toFile()));
+            Path pathFileToDisplay = Paths.get(qrCode.getFilePath());
+            QrCodeDto qrCodeDto = new QrCodeDto(qrCode, readFileToByteArray(path.toFile()),
+                    readFileToByteArray(pathFileToDisplay.toFile()));
             qrCodeDtos.add(qrCodeDto);
         });
         return new ResponseEntity<>(qrCodeDtos, HttpStatus.OK);
@@ -140,7 +157,9 @@ public class BoardUserService implements IBoardUser {
         QrCode qrCode = qrCodeRepository.findById(id).orElse(null);
         assert qrCode != null;
         Path path = Paths.get(qrCode.getLocation());
-        QrCodeDto qrCodeDto = new QrCodeDto(qrCode, readFileToByteArray(path.toFile()));
+        Path pathFileToDisplay = Paths.get(qrCode.getFilePath());
+        QrCodeDto qrCodeDto = new QrCodeDto(qrCode, readFileToByteArray(path.toFile()),
+                readFileToByteArray(pathFileToDisplay.toFile()));
         return new ResponseEntity<>(qrCodeDto, HttpStatus.OK);
     }
 
