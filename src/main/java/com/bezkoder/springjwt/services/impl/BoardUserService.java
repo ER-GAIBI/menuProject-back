@@ -63,12 +63,12 @@ public class BoardUserService implements IBoardUser {
             int size = 200;
             String fileType = "png";
             File qrFile = new File(filePath);
-            createQRImage(qrFile, qrCodeText, size, fileType);
             UserDetailsImpl userDetail = (UserDetailsImpl) getAuthentication().getPrincipal();
             User user = userDetail.getUser();
             String fileToSave = this.saveUploadedFile(file);
             QrCode qrCode = new QrCode(filePath, user, name, fileToSave);
-            qrCodeRepository.save(qrCode);
+            QrCode svedQrCode = qrCodeRepository.save(qrCode);
+            createQRImage(qrFile, "http://46.101.151.85:4200/getCode?id=" + svedQrCode.getId(), size, fileType);
         } else {
             // return null;
         }
