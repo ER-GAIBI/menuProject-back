@@ -1,7 +1,7 @@
 package com.bezkoder.springjwt.controllers;
 
 import com.bezkoder.springjwt.dto.QrCodeDto;
-import com.bezkoder.springjwt.models.QrCode;
+import com.bezkoder.springjwt.models.Viewer;
 import com.bezkoder.springjwt.services.IBoardUser;
 import com.bezkoder.springjwt.utils.ParamsPath;
 import com.google.zxing.WriterException;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -60,5 +59,25 @@ public class BoardUser {
     public ResponseEntity<QrCodeDto> getCode(@RequestParam("id") String id)
     {
         return this.iBoardUser.getCode(Long.parseLong(id));
+    }
+
+    @GetMapping("/getCodeForScan")
+    public ResponseEntity<QrCodeDto> getCodeForScan(@RequestParam("id") String id)
+    {
+        return this.iBoardUser.getCodeForScan(Long.parseLong(id));
+    }
+
+    @PostMapping("/setTime")
+    @ResponseStatus(HttpStatus.OK)
+    public Viewer setViewedTime(@RequestParam(ParamsPath.TIME) String time,
+                                                @RequestParam(ParamsPath.ID) String viewerId,
+                                                @RequestParam(ParamsPath.QR_CODE_ID) String qrCodeId) {
+        return this.iBoardUser.saveViewingTime(Long.parseLong(viewerId), Long.parseLong(qrCodeId), Long.parseLong(time));
+    }
+
+    @GetMapping("/newViewer")
+    public Viewer newViewer()
+    {
+        return this.iBoardUser.newViewer();
     }
 }

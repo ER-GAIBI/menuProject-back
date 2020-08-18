@@ -3,7 +3,9 @@ package com.bezkoder.springjwt.services.impl;
 import com.bezkoder.springjwt.dto.QrCodeDto;
 import com.bezkoder.springjwt.models.QrCode;
 import com.bezkoder.springjwt.models.User;
+import com.bezkoder.springjwt.models.Viewer;
 import com.bezkoder.springjwt.repository.QrCodeRepository;
+import com.bezkoder.springjwt.repository.ViewerRepository;
 import com.bezkoder.springjwt.security.services.UserDetailsImpl;
 import com.bezkoder.springjwt.services.IBoardUser;
 import com.google.zxing.BarcodeFormat;
@@ -35,6 +37,7 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -46,6 +49,9 @@ public class BoardUserService implements IBoardUser {
 
     @Autowired
     QrCodeRepository qrCodeRepository;
+
+    @Autowired
+    ViewerRepository viewerRepository;
 
     @Autowired
     ResourceLoader resourceLoader;
@@ -89,6 +95,7 @@ public class BoardUserService implements IBoardUser {
             File qrFile = new File(filePath);
             String fileToSave = this.saveUploadedFile(file);
             qrCode.setName(name);
+            qrCode.setScannedTime(0);
             qrCode.setLocation(filePath);
             qrCode.setFilePath(fileToSave);
             createQRImage(qrFile, "http://46.101.151.85:4200/getCode?id=" + qrCode.getId(), size, fileType);
@@ -157,9 +164,18 @@ public class BoardUserService implements IBoardUser {
         QrCode qrCode = qrCodeRepository.findById(id).orElse(null);
         assert qrCode != null;
         Path path = Paths.get(qrCode.getLocation());
+        QrCodeDto qrCodeDto = new QrCodeDto(qrCode, readFileToByteArray(path.toFile()));
+        return new ResponseEntity<>(qrCodeDto, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<QrCodeDto> getCodeForScan(long id) {
+        QrCode qrCode = qrCodeRepository.findById(id).orElse(null);
+        assert qrCode != null;
         Path pathFileToDisplay = Paths.get(qrCode.getFilePath());
-        QrCodeDto qrCodeDto = new QrCodeDto(qrCode, readFileToByteArray(path.toFile()),
-                readFileToByteArray(pathFileToDisplay.toFile()));
+        qrCode.setScannedTime(qrCode.getScannedTime() + 1);
+        Viewer viewer = viewerRepository.save(new Viewer(new Date()));
+        QrCodeDto qrCodeDto = new QrCodeDto(qrCode, readFileToByteArray(pathFileToDisplay.toFile()), viewer);
         return new ResponseEntity<>(qrCodeDto, HttpStatus.OK);
     }
 
@@ -181,5 +197,21 @@ public class BoardUserService implements IBoardUser {
     @Override
     public void delete(Long idQrCode) {
         this.qrCodeRepository.deleteById(idQrCode);
+    }
+
+    @Override
+    public Viewer saveViewingTime(long idViewer, long idQrCode, long time) {
+        Viewer viewer = viewerRepository.findById(idViewer).orElse(new Viewer());
+        if (viewer.getId() != null) {
+            QrCode qrCode = qrCodeRepository.findById(idQrCode).orElse(null);
+            viewer.setViewingTime(time);
+            viewer.setQrCode(qrCode);
+        }
+        return viewer;
+    }
+
+    @Override
+    public Viewer newViewer() {
+        return viewerRepository.save(new Viewer(new Date()));
     }
 }

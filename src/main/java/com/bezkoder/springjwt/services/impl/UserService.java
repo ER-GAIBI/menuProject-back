@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,7 +43,9 @@ public class UserService implements IUserService {
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()),
                 signUpRequest.getCommercialRegistrationNo(),
-                signUpRequest.getCompanyName());
+                signUpRequest.getCompanyName(),
+                signUpRequest.getPhone(),
+                new Date());
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();

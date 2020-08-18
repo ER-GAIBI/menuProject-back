@@ -23,6 +23,8 @@ public class SignupRequest {
 
     private String commercialRegistrationNo;
 
+    private String phone;
+
     public String getCompanyName() {
         return companyName;
     }
@@ -69,5 +71,13 @@ public class SignupRequest {
     
     public void setRole(Set<String> role) {
       this.role = role;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

@@ -1,5 +1,6 @@
 package com.bezkoder.springjwt.models;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,6 +35,10 @@ public class User {
 
 	private String companyName;
 
+	private String phone;
+
+	private Date creationDate;
+
 	private String commercialRegistrationNo;
 
 	@Column(name = "enabled")
@@ -50,12 +55,15 @@ public class User {
 		this.enabled=false;
 	}
 
-	public User(String username, String email, String password, String commercialNumber, String companyName) {
+	public User(String username, String email, String password, String commercialNumber, String companyName, String phone,
+				Date creationDate) {
 		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.commercialRegistrationNo = commercialNumber;
 		this.companyName = companyName;
+		this.phone = phone;
+		this.creationDate = creationDate;
 	}
 
 	public String getCompanyName() {
@@ -120,5 +128,21 @@ public class User {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
 	}
 }

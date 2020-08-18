@@ -1,12 +1,17 @@
 package com.bezkoder.springjwt.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import java.util.List;
 
 @Entity
 public class QrCode {
@@ -21,9 +26,15 @@ public class QrCode {
 
     private String filePath;
 
+    private int scannedTime;
+
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
+
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "qrCode", orphanRemoval = true)
+    private List<Viewer> viewer;
 
     public QrCode() {
     }
@@ -73,5 +84,21 @@ public class QrCode {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+    public int getScannedTime() {
+        return scannedTime;
+    }
+
+    public void setScannedTime(int scannedTime) {
+        this.scannedTime = scannedTime;
+    }
+
+    public List<Viewer> getViewer() {
+        return viewer;
+    }
+
+    public void setViewer(List<Viewer> viewer) {
+        this.viewer = viewer;
     }
 }
