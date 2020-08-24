@@ -15,4 +15,6 @@ public interface IUserService {
     void createVerificationToken(User user, String token);
 
     VerificationToken getVerificationToken(String VerificationToken);
+
+    boolean changePassword(String password, String newPassword, String id);
 }

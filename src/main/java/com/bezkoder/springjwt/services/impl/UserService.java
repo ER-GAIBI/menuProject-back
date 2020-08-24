@@ -101,4 +101,20 @@ public class UserService implements IUserService {
     public VerificationToken getVerificationToken(String VerificationToken) {
         return verificationTokenRepository.findByToken(VerificationToken);
     }
+
+    @Override
+    public boolean changePassword(String password, String newPassword, String id) {
+        boolean result = false;
+        User currentUser = userRepository.findById(Long.parseLong(id)).orElse(null);
+        if (currentUser != null) {
+            boolean matchPassword = encoder.matches(password, currentUser.getPassword());
+            if (matchPassword) {
+                currentUser.setPassword(encoder.encode(newPassword));
+                result = true;
+            } else {
+                result =false;
+            }
+        }
+        return result;
+    }
 }

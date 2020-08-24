@@ -12,6 +12,7 @@ import com.bezkoder.springjwt.security.jwt.JwtUtils;
 import com.bezkoder.springjwt.security.services.UserDetailsImpl;
 import com.bezkoder.springjwt.services.IUserService;
 import com.bezkoder.springjwt.services.OnRegistrationCompleteEvent;
+import com.bezkoder.springjwt.utils.ParamsPath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
@@ -142,5 +143,14 @@ public class AuthController {
 		user.setEnabled(true);
 		service.saveRegisteredUser(user);
 		return ResponseEntity.ok(new MessageResponse("ok"));
+	}
+
+	@PostMapping("/changePassword")
+	public ResponseEntity<?> chnagePassword(@RequestParam(ParamsPath.PASSWORD) String password,
+											@RequestParam(ParamsPath.NEW_PASSWORD) String newPassword,
+											@RequestParam(ParamsPath.ID) String userId) {
+
+		boolean result = this.service.changePassword(password, newPassword, userId);
+		return ResponseEntity.ok(new MessageResponse(String.valueOf(result)));
 	}
 }
