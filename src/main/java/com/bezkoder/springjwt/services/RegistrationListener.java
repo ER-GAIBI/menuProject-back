@@ -2,6 +2,7 @@ package com.bezkoder.springjwt.services;
 
 import com.bezkoder.springjwt.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.SimpleMailMessage;
@@ -20,6 +21,9 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 
     @Autowired
     private JavaMailSender mailSender;
+
+    /*@Value("${spring.mail.username}")
+    private String from;*/
 
     @Override
     public void onApplicationEvent(OnRegistrationCompleteEvent event) {
@@ -40,6 +44,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
                 "نحن سعداء للغاية بتسجيلك على منصتنا ، إليك رابط التأكيد الشخصي:";
 
         SimpleMailMessage email = new SimpleMailMessage();
+        /*email.setFrom(from);*/
         email.setTo(recipientAddress);
         email.setSubject(subject);
         email.setText(message + "\r\n" + URL + "?token=" + token);
