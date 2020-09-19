@@ -14,7 +14,7 @@ import java.util.UUID;
 @Component
 public class RegistrationListener implements ApplicationListener<OnRegistrationCompleteEvent> {
 
-    private static final String URL = "http://46.101.151.85:4200/successRegistration";
+    private static final String URL = "http://www.qmenusa.com/successRegistration";
 
     @Autowired
     private IUserService service;
@@ -44,7 +44,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
                 "نحن سعداء للغاية بتسجيلك على منصتنا ، إليك رابط التأكيد الشخصي:";
 
         SimpleMailMessage email = new SimpleMailMessage();
-        /*email.setFrom(from);*/
+        email.setFrom("noreply@qmenusa.com");
         email.setTo(recipientAddress);
         email.setSubject(subject);
         email.setText(message + "\r\n" + URL + "?token=" + token);
