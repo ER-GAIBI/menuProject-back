@@ -14,7 +14,7 @@ import java.util.UUID;
 @Component
 public class RegistrationListener implements ApplicationListener<OnRegistrationCompleteEvent> {
 
-    private static final String URL = "http://www.qmenusa.com/successRegistration";
+    private static final String URL = "http://qmenusa.com/successRegistration";
 
     @Autowired
     private IUserService service;
