@@ -66,7 +66,7 @@ public class BoardUserService implements IBoardUser {
             }
             // String filePath = ROOT + qrCodeText + ".png";
             String filePath = qrCodeText + ".png";
-            int size = 200;
+            int size = 300;
             String fileType = "png";
             File qrFile = new File(filePath);
             UserDetailsImpl userDetail = (UserDetailsImpl) getAuthentication().getPrincipal();
