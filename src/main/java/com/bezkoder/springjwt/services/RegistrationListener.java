@@ -2,9 +2,7 @@ package com.bezkoder.springjwt.services;
 
 import com.bezkoder.springjwt.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.MessageSource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -37,17 +35,26 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 
         String recipientAddress = user.getEmail();
         String subject = "Registration Confirmation";
-        /*String confirmationUrl
-                = event.getAppUrl() + "/api/auth/regitrationConfirm?token=" + token;*/
 
         String message = "We are so glad you registred on our platefrom, Here's your personal confirmation link : " +
-                "نحن سعداء للغاية بتسجيلك على منصتنا ، إليك رابط التأكيد الشخصي:";
+                "نحن سعداء للغاية بتسجيلك على منصتنا ، إليك رابط التأكيد الشخصي";
+
+        String contact = ": للتواصل والاستفسارات " ;
+        String twitter = ": تويتر " ;
+        String twitterLink = " https://twitter.com/QMenu1 " ;
+        String watssp = ": واتساب " ;
+        String watsspLink = " https://api.whatsapp.com/message/6XZYOGADORWCF1 " ;
+        String em = " : البريد الإلكتروني " ;
+        String emLink = " Help@qmenusa.com " ;
 
         SimpleMailMessage email = new SimpleMailMessage();
         email.setFrom("noreply@qmenusa.com");
         email.setTo(recipientAddress);
         email.setSubject(subject);
-        email.setText(message + "\r\n" + URL + "?token=" + token);
+        email.setText(message + "\r\n" + URL + "?token=" + token + "\r\n" + contact + "\r\n"
+                + twitter + "\r\n" + twitterLink + "\r\n"
+                + watssp + "\r\n" + watsspLink + "\r\n"
+                + em + "\r\n" + emLink);
         mailSender.send(email);
     }
 }
