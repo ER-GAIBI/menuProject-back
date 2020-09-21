@@ -66,7 +66,7 @@ public class BoardUserService implements IBoardUser {
             }
             // String filePath = ROOT + qrCodeText + ".png";
             String filePath = qrCodeText + ".png";
-            int size = 450;
+            int size = 720;
             String fileType = "png";
             File qrFile = new File(filePath);
             UserDetailsImpl userDetail = (UserDetailsImpl) getAuthentication().getPrincipal();
@@ -90,7 +90,7 @@ public class BoardUserService implements IBoardUser {
             }
             // String filePath = ROOT + qrCodeText + ".png";
             String filePath = qrCodeText + ".png";
-            int size = 200;
+            int size = 720;
             String fileType = "png";
             File qrFile = new File(filePath);
             String fileToSave = this.saveUploadedFile(file);
