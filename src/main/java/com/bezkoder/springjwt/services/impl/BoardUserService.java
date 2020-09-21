@@ -74,7 +74,7 @@ public class BoardUserService implements IBoardUser {
             String fileToSave = this.saveUploadedFile(file);
             QrCode qrCode = new QrCode(filePath, user, name, fileToSave);
             QrCode svedQrCode = qrCodeRepository.save(qrCode);
-            createQRImage(qrFile, "http://46.101.151.85:4200/getCode?id=" + svedQrCode.getId(), size, fileType);
+            createQRImage(qrFile, "http://qmenusa.com/getCode?id=" + svedQrCode.getId(), size, fileType);
         } else {
             // return null;
         }
@@ -98,7 +98,7 @@ public class BoardUserService implements IBoardUser {
             qrCode.setScannedTime(0);
             qrCode.setLocation(filePath);
             qrCode.setFilePath(fileToSave);
-            createQRImage(qrFile, "http://46.101.151.85:4200/getCode?id=" + qrCode.getId(), size, fileType);
+            createQRImage(qrFile, "http://qmenusa.com/getCode?id=" + qrCode.getId(), size, fileType);
         } else {
             // return null;
         }
