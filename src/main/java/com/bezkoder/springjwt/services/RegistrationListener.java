@@ -41,7 +41,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 
         String contact = ": للتواصل والاستفسارات " ;
         String twitter = ": تويتر " ;
-        String twitterLink = " https://twitter.com/QMenu1 " ;
+        String twitterLink = " https://twitter.com/QMenuSA " ;
         String watssp = ": واتساب " ;
         String watsspLink = " https://api.whatsapp.com/message/6XZYOGADORWCF1 " ;
         String em = " : البريد الإلكتروني " ;
